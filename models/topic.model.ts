@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const topicSchema = new Schema(
   {
     title: String,
-    avata: String,
+    avatar: String,
     description: String,
     slug: String,
     deleted: {
