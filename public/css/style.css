@@ -43,3 +43,38 @@
   font-weight: 600;
   color: green;
 }
+
+/* Song Item */
+.song-item {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.song-item .inner-image {
+  width: 115px;
+  aspect-ratio: 1/1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.song-item .inner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.song-item .inner-content {
+  padding: 10px;
+  flex: 1;
+}
+
+.song-item .inner-content .inner-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  margin-bottom: 5px;
+}

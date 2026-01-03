@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const topic_route_1 = require("./topic.route");
+const song_route_1 = require("./song.route");
 const clientRoutes = (app) => {
     app.use("/topics", topic_route_1.topicRoutes);
+    app.use("/songs", song_route_1.songRoutes);
 };
 exports.default = clientRoutes;
