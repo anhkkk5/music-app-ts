@@ -1,25 +1,20 @@
-import express from "express";
-import type { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import path from "path";
-import * as database from "./config/database";
-import Topic from "./models/topic.model";
-const app: Express = express();
+import { connect } from "./config/database";
+import clientRoutes from "./routes/client/index.route";
 
 dotenv.config();
 const port = Number(process.env.PORT) || 3002;
+const app: Express = express();
 
 app.set("views", path.join(process.cwd(), "views"));
 app.set("view engine", "pug");
-
-app.get("/topics", async (req: Request, res: Response) => {
-  const topics = await Topic.find({ deleted: false });
-  console.log(topics);
-  res.render("client/page/topics/index", { topics });
-});
+//clientRoutes
+clientRoutes(app);
 
 const bootstrap = async () => {
-  await database.connect();
+  await connect();
 
   app.listen(port, () => {
     console.log(`App listening on port ${port}`);
