@@ -9,6 +9,8 @@ const topic_model_1 = __importDefault(require("../../models/topic.model"));
 const topics = async (req, res) => {
     const topics = await topic_model_1.default.find({ deleted: false });
     console.log(topics);
-    res.render("client/page/topics/index");
+    res.render("client/page/topics/index", {
+        pageTitle: "Chủ đề bài hát",
+    });
 };
 exports.topics = topics;
