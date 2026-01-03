@@ -6,7 +6,10 @@ import clientRoutes from "./routes/client/index.route";
 
 dotenv.config();
 const port = Number(process.env.PORT) || 3002;
+
 const app: Express = express();
+
+app.use(express.static("public"));
 
 app.set("views", path.join(process.cwd(), "views"));
 app.set("view engine", "pug");

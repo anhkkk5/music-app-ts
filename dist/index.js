@@ -11,6 +11,7 @@ const index_route_1 = __importDefault(require("./routes/client/index.route"));
 dotenv_1.default.config();
 const port = Number(process.env.PORT) || 3002;
 const app = (0, express_1.default)();
+app.use(express_1.default.static("public"));
 app.set("views", path_1.default.join(process.cwd(), "views"));
 app.set("view engine", "pug");
 //clientRoutes
