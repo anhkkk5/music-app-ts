@@ -3,6 +3,7 @@ import type { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import path from "path";
 import * as database from "./config/database";
+import Topic from "./models/topic.model";
 const app: Express = express();
 
 dotenv.config();
@@ -11,8 +12,10 @@ const port = Number(process.env.PORT) || 3002;
 app.set("views", path.join(process.cwd(), "views"));
 app.set("view engine", "pug");
 
-app.get("/topics", (req: Request, res: Response) => {
-  res.render("client/page/topics/index");
+app.get("/topics", async (req: Request, res: Response) => {
+  const topics = await Topic.find({ deleted: false });
+  console.log(topics);
+  res.render("client/page/topics/index", { topics });
 });
 
 const bootstrap = async () => {

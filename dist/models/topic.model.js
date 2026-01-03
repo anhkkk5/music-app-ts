@@ -32,29 +32,20 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const path_1 = __importDefault(require("path"));
-const database = __importStar(require("./config/database"));
-const topic_model_1 = __importDefault(require("./models/topic.model"));
-const app = (0, express_1.default)();
-dotenv_1.default.config();
-const port = Number(process.env.PORT) || 3002;
-app.set("views", path_1.default.join(process.cwd(), "views"));
-app.set("view engine", "pug");
-app.get("/topics", async (req, res) => {
-    const topics = await topic_model_1.default.find({ deleted: false });
-    console.log(topics);
-    res.render("client/page/topics/index", { topics });
+const mongoose_1 = __importStar(require("mongoose"));
+const topicSchema = new mongoose_1.Schema({
+    title: String,
+    avata: String,
+    description: String,
+    slug: String,
+    deleted: {
+        type: Boolean,
+        default: false,
+    },
+    deleteAt: Date,
+}, {
+    timestamps: true,
 });
-const bootstrap = async () => {
-    await database.connect();
-    app.listen(port, () => {
-        console.log(`App listening on port ${port}`);
-    });
-};
-void bootstrap();
+const Topic = mongoose_1.default.model("Topic", topicSchema, "topics");
+exports.default = Topic;
