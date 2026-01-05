@@ -78,3 +78,127 @@
   font-weight: 600;
   margin-bottom: 5px;
 }
+
+.singer-detail .container {
+  max-width: 760px;
+}
+
+.singer-detail .inner-title {
+  font-size: 34px;
+  font-weight: 700;
+  color: #f39c12;
+  margin-bottom: 8px;
+}
+
+.singer-detail .inner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+  color: #6b7280;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.singer-detail .inner-actions .inner-action i {
+  margin-right: 6px;
+}
+
+.singer-detail .inner-play {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 18px 0;
+}
+
+.singer-detail .inner-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #f39c12;
+  flex: 0 0 auto;
+}
+
+.singer-detail .inner-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  animation: singer-avatar-spin 12s linear infinite;
+  transform-origin: 50% 50%;
+  animation-play-state: paused;
+}
+
+@keyframes singer-avatar-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.singer-detail .inner-audio {
+  flex: 1;
+  background: #f3f4f6;
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+
+.singer-detail .inner-audio audio {
+  width: 100%;
+  height: 40px;
+}
+
+.singer-detail .inner-like {
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.singer-detail .inner-like.active {
+  color: blue;
+}
+
+.singer-detail .inner-desc {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  background: #fff;
+}
+
+.singer-detail .inner-desc .inner-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f39c12;
+  margin-bottom: 8px;
+}
+
+.singer-detail .inner-desc .inner-text {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+@media (max-width: 576px) {
+  .singer-detail .inner-title {
+    font-size: 28px;
+  }
+
+  .singer-detail .inner-play {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .singer-detail .inner-audio {
+    width: 100%;
+    border-radius: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .singer-detail .inner-avatar img {
+    animation: none;
+  }
+}

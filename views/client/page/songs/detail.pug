@@ -1,0 +1,59 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .singer-detail
+    .container.my-3
+      .row
+        .col-12
+          .inner-title #{song.title}
+
+          .inner-actions
+            .inner-action.inner-time
+              i.fa-regular.fa-clock
+              |  #{song.createdAt}
+
+            .inner-action.inner-singer
+              i.fa-solid.fa-microphone-lines
+              |  #{singer.fullName}
+
+            .inner-action.inner-topic
+              i.fa-solid.fa-music
+              |  #{topic.title}
+
+            div(class="inner-action inner-like" button-like=song.id)  
+              i.fa-regular.fa-thumbs-up
+              span #{song.like} thích
+
+            .inner-action.inner-heart
+              i.fa-regular.fa-heart
+              |  Bài hát yêu thích
+
+          .inner-play
+            .inner-avatar
+              img(
+                src=song.avatar
+                alt=song.title
+              )
+
+            .inner-audio
+              //- Nếu dùng audio mặc định thì mở block này
+              //-
+              //- audio(controls)
+              //-   source(
+              //-     src="https://backend.daca.vn/assets/audios/cat-doi-noi-sau.mp3"
+              //-     type="audio/mpeg"
+              //-   )
+
+              //- APlayer
+              div(id="aplayer" data-song=`${JSON.stringify(song)}` data-singer=`${JSON.stringify(singer)}`) /* định nghĩa */
+
+          .inner-desc
+            .inner-label Mô tả
+            .inner-text
+              | #{song.description}
+
+          .inner-desc
+            .inner-label Lời bài hát
+            .inner-text
+              | !{song.lyrics}

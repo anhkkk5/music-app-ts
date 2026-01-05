@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.list = void 0;
+exports.like = exports.detail = exports.list = void 0;
 const topic_model_1 = __importDefault(require("../../models/topic.model"));
 const song_model_1 = __importDefault(require("../../models/song.model"));
 const singer_model_1 = __importDefault(require("../../models/singer.model"));
@@ -37,6 +37,7 @@ const list = async (req, res) => {
         })
             .select("fullName slug")
             .lean();
+        console.log("infosinger", infoSinger);
         song.infoSinger = infoSinger;
     }
     res.render("client/page/songs/list", {
@@ -45,3 +46,57 @@ const list = async (req, res) => {
     });
 };
 exports.list = list;
+// [GET] /songs/detail/:slugSong
+const detail = async (req, res) => {
+    const slugSong = req.params.slugSong;
+    const song = await song_model_1.default.findOne({
+        slug: slugSong,
+        status: "active",
+        deleted: false,
+    });
+    if (!song) {
+        return res.status(404).render("client/page/songs/detail", {
+            pageTitle: "Bài hát không tồn tại",
+        });
+    }
+    const singer = await singer_model_1.default.findOne({
+        _id: song.singerId,
+        status: "active",
+        deleted: false,
+    }).select("fullName");
+    const topic = await topic_model_1.default.findOne({
+        _id: song.topicId,
+        status: "active",
+        deleted: false,
+    }).select("title");
+    // console.log("topic:", topic);
+    // console.log("song:", song);
+    res.render("client/page/songs/detail", {
+        pageTitle: "Chi tiết bài hát",
+        song: song,
+        singer: singer,
+        topic: topic,
+    });
+};
+exports.detail = detail;
+//[PATCH] /songs/like/:typeLike/:idSong
+const like = async (req, res) => {
+    const idSong = req.params.idSong;
+    const typeLike = req.params.typeLike;
+    console.log("idSong:", idSong);
+    console.log("typeLike:", typeLike);
+    const song = await song_model_1.default.findOneAndUpdate({
+        _id: idSong,
+        status: "active",
+        deleted: false,
+    }, {
+        $inc: { like: typeLike === "like" ? 1 : -1 },
+    }, {
+        new: true,
+    }).select("like");
+    // sau làm tính năng like dạng mảng chứa id của user chứ không làm số lượng like
+    // để kiểm tra user đã like chưa (phải có auth session - cần thêm middleware xác thực)
+    // và cập nhật mảng like với id người dùng
+    res.json({ success: true, like: song?.like });
+};
+exports.like = like;
