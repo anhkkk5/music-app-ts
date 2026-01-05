@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.like = exports.detail = exports.list = void 0;
+exports.favorite = exports.like = exports.detail = exports.list = void 0;
 const topic_model_1 = __importDefault(require("../../models/topic.model"));
 const song_model_1 = __importDefault(require("../../models/song.model"));
 const singer_model_1 = __importDefault(require("../../models/singer.model"));
+const favorite_song_model_1 = __importDefault(require("../../models/favorite-song.model"));
 // [GET] /songs/:slugTopic
 const list = async (req, res) => {
     console.log(req.params.slugTopic);
@@ -71,6 +72,11 @@ const detail = async (req, res) => {
     }).select("title");
     // console.log("topic:", topic);
     // console.log("song:", song);
+    const favoriteSong = await favorite_song_model_1.default.findOne({
+        songId: song._id.toString(),
+        // userId: req.user._id,
+    });
+    song["isFavorite"] = favoriteSong ? true : false;
     res.render("client/page/songs/detail", {
         pageTitle: "Chi tiết bài hát",
         song: song,
@@ -100,3 +106,41 @@ const like = async (req, res) => {
     res.json({ success: true, like: song?.like });
 };
 exports.like = like;
+//[PATCH] /songs/favorite/:typeFavorite/:idSong
+const favorite = async (req, res) => {
+    const idSong = req.params.idSong;
+    const typeFavorite = req.params.typeFavorite;
+    switch (typeFavorite) {
+        case "favorite":
+            const existFavoriteSong = await favorite_song_model_1.default.findOne({
+                songId: idSong,
+            });
+            if (!existFavoriteSong) {
+                const newFavorite = new favorite_song_model_1.default({
+                    songId: idSong,
+                    // userId: req.user._id,sau làm thêm
+                });
+                await newFavorite.save();
+            }
+            break;
+        case "unfavorite":
+            const existFavorite = await favorite_song_model_1.default.findOne({
+                songId: idSong,
+                // userId: req.user._id,
+            });
+            if (existFavorite) {
+                await favorite_song_model_1.default.deleteOne({
+                    songId: idSong,
+                    // userId: req.user._id,
+                });
+            }
+            break;
+        default:
+            return res.status(400).json({ code: 400, message: "Invalid type" });
+    }
+    res.json({
+        code: 200,
+        message: "Thành công",
+    });
+};
+exports.favorite = favorite;

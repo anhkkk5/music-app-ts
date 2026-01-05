@@ -161,6 +161,14 @@
   color: blue;
 }
 
+.singer-detail .inner-heart {
+  cursor: pointer;
+}
+
+.singer-detail .inner-heart.active {
+  color: red;
+}
+
 .singer-detail .inner-desc {
   border: 1px solid #e5e7eb;
   border-radius: 8px;

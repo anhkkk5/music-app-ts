@@ -25,7 +25,7 @@ block main
               i.fa-regular.fa-thumbs-up
               span #{song.like} thích
 
-            .inner-action.inner-heart
+            div(class=("inner-action inner-heart" + (song.isFavorite ? " active" : "")) button-favorite=song.id)
               i.fa-regular.fa-heart
               |  Bài hát yêu thích
 
