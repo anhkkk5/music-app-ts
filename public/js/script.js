@@ -83,35 +83,37 @@ if (buttonLike) {
 //end button like
 
 //button favorite
-const buttonFavorite = document.querySelector("[button-favorite]");
-if (buttonFavorite) {
-  buttonFavorite.addEventListener("click", () => {
-    const idSong = buttonFavorite.getAttribute("button-favorite");
+const ListbuttonFavorite = document.querySelectorAll("[button-favorite]");
+if (ListbuttonFavorite.length > 0) {
+  ListbuttonFavorite.forEach((buttonFavorite) => {
+    buttonFavorite.addEventListener("click", () => {
+      const idSong = buttonFavorite.getAttribute("button-favorite");
 
-    const isActive = buttonFavorite.classList.contains("active");
+      const isActive = buttonFavorite.classList.contains("active");
 
-    const typeFavorite = isActive ? "unfavorite" : "favorite";
-    const link = `/songs/favorite/${typeFavorite}/${idSong}`;
+      const typeFavorite = isActive ? "unfavorite" : "favorite";
+      const link = `/songs/favorite/${typeFavorite}/${idSong}`;
 
-    const options = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch(link, options)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.code === 200) {
-          buttonFavorite.classList.toggle("active");
-        } else {
-          console.error("Failed to favorite song:", data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error favoriting song:", error);
-      });
-    console.log(link);
+      const options = {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      fetch(link, options)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.code === 200) {
+            buttonFavorite.classList.toggle("active");
+          } else {
+            console.error("Failed to favorite song:", data);
+          }
+        })
+        .catch((error) => {
+          console.error("Error favoriting song:", error);
+        });
+      console.log(link);
+    });
   });
 }
 //end button favorite
