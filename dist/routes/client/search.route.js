@@ -37,5 +37,5 @@ exports.searchRoutes = void 0;
 const express_1 = require("express");
 const controller = __importStar(require("../../controllers/client/search.controller"));
 const router = (0, express_1.Router)();
-router.get("/result", controller.result);
+router.get("/:type", controller.result);
 exports.searchRoutes = router;

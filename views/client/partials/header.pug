@@ -1,33 +1,30 @@
 header.header
   .container
     .row.align-items-center
+
+      // LOGO
       .col-3
         .inner-logo
           a(href="/")
             img(src="/images/logo.svg", alt="Logo")
-      
 
+      // SEARCH + SUGGEST
       .col-5
         .box-search
-          form(
-            action="/search/result"
-            method="GET"
-          )
-            div(class="form-group d-flex mb-0")
-              input(
+          form(action="/search/result" method="GET")
+            .form-group.d-flex.mb-0
+              input.form-control(
                 type="text"
                 placeholder="Nhập từ khóa..."
-                class="form-control"
                 name="keyword"
                 value=keyword
               )
-              button(
-                type="submit"
-                class="btn btn-primary"
-              ) Tìm
+              button.btn.btn-primary(type="submit") Tìm
 
+        .inner-suggest
+          .inner-list
 
-
+      // MENU
       .col-4
         .inner-menu
           ul
@@ -36,6 +33,6 @@ header.header
             li
               a(href="/topics") Chủ đề
             li
-              a(href="/favorite-songs") 
+              a(href="/favorite-songs")
                 i.fa-regular.fa-heart
                 |  Yêu thích

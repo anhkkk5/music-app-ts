@@ -147,3 +147,52 @@ if (ListbuttonFavorite.length > 0) {
   });
 }
 //end button favorite
+
+//search Suggest
+const boxSearch = document.querySelector(".box-search");
+if (boxSearch) {
+  const input = document.querySelector("input[name='keyword']");
+  const boxSuggest = document.querySelector(".inner-suggest");
+  const boxList = boxSuggest ? boxSuggest.querySelector(".inner-list") : null;
+
+  if (input && boxSuggest && boxList) {
+    input.addEventListener("keyup", () => {
+      const keyword = input.value || "";
+      if (!keyword.trim()) {
+        boxSuggest.classList.remove("show");
+        boxList.innerHTML = "";
+        return;
+      }
+
+      const link = `/search/suggest?keyword=${encodeURIComponent(keyword)}`;
+      fetch(link)
+        .then((response) => response.json())
+        .then((data) => {
+          const songs = data && Array.isArray(data.songs) ? data.songs : [];
+          if (songs.length === 0) {
+            boxSuggest.classList.remove("show");
+            boxList.innerHTML = "";
+            return;
+          }
+
+          boxSuggest.classList.add("show");
+          boxList.innerHTML = songs
+            .map((song) => {
+              const singerName = song.infoSinger || "";
+              return `<a class="inner-item" href="/songs/detail/${song.slug}">
+  <div class="inner-image"><img src="${song.avatar}" alt="${song.title}"></div>
+  <div class="inner-info">
+    <div class="inner-title">${song.title}</div>
+    <div class="inner-singer"><i class="fa-solid fa-microphone-lines"></i> ${singerName}</div>
+  </div>
+</a>`;
+            })
+            .join("");
+        })
+        .catch((error) => {
+          console.error("Error fetching search suggestions:", error);
+        });
+    });
+  }
+}
+//end search Suggest
