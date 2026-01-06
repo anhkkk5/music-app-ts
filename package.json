@@ -27,7 +27,8 @@
     "mongoose": "^9.1.1",
     "pre-commit": "^1.2.2",
     "pug": "^3.0.3",
-    "rimraf": "^6.1.2"
+    "rimraf": "^6.1.2",
+    "unidecode-plus": "^1.0.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

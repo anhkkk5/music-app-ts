@@ -52,6 +52,21 @@ if (aplayer) {
 //button like
 const buttonLike = document.querySelector("[button-like]");
 if (buttonLike) {
+  const idSongInit = buttonLike.getAttribute("button-like");
+  try {
+    const likedRaw = localStorage.getItem("likedSongs") || "[]";
+    const likedSongs = JSON.parse(likedRaw);
+    if (
+      idSongInit &&
+      Array.isArray(likedSongs) &&
+      likedSongs.includes(idSongInit)
+    ) {
+      buttonLike.classList.add("active");
+    }
+  } catch (e) {
+    localStorage.removeItem("likedSongs");
+  }
+
   buttonLike.addEventListener("click", () => {
     const idSong = buttonLike.getAttribute("button-like");
 
@@ -73,6 +88,21 @@ if (buttonLike) {
         const span = buttonLike.querySelector("span");
         span.innerHTML = `${data.like} thích`;
         buttonLike.classList.toggle("active");
+
+        try {
+          const likedRaw = localStorage.getItem("likedSongs") || "[]";
+          const likedSongs = JSON.parse(likedRaw);
+          const safeList = Array.isArray(likedSongs) ? likedSongs : [];
+          if (!idSong) return;
+
+          const nowActive = buttonLike.classList.contains("active");
+          const next = nowActive
+            ? Array.from(new Set([...safeList, idSong]))
+            : safeList.filter((x) => x !== idSong);
+          localStorage.setItem("likedSongs", JSON.stringify(next));
+        } catch (e) {
+          localStorage.removeItem("likedSongs");
+        }
       })
       .catch((error) => {
         console.error("Error liking song:", error);
