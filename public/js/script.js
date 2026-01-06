@@ -28,6 +28,7 @@ if (aplayer) {
       },
     ],
     autoplay: true,
+    loop: "none",
   });
   const avatarImg = document.querySelector(".singer-detail .inner-avatar img");
 
@@ -44,6 +45,30 @@ if (aplayer) {
 
   ap.on("pause", function () {
     setAvatarSpin(false);
+  });
+  ap.on("ended", function () {
+    ap.pause();
+    if (ap.audio) {
+      ap.audio.currentTime = 0;
+    }
+    const link = `/songs/listen/${dataSong._id}`;
+
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(link, options)
+      .then((response) => response.json())
+      .then((data) => {
+        const elementListenSpan = document.querySelector(
+          ".singer-detail .inner-listen span"
+        );
+        if (elementListenSpan) {
+          elementListenSpan.innerHTML = `${data.listen} lượt nghe`;
+        }
+      });
   });
 }
 

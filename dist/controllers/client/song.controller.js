@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.favorite = exports.like = exports.detail = exports.list = void 0;
+exports.listen = exports.favorite = exports.like = exports.detail = exports.list = void 0;
 const topic_model_1 = __importDefault(require("../../models/topic.model"));
 const song_model_1 = __importDefault(require("../../models/song.model"));
 const singer_model_1 = __importDefault(require("../../models/singer.model"));
@@ -144,3 +144,18 @@ const favorite = async (req, res) => {
     });
 };
 exports.favorite = favorite;
+//[PATCH] /songs/listen/:idSong
+const listen = async (req, res) => {
+    const idSong = req.params.idSong;
+    const song = await song_model_1.default.findOneAndUpdate({
+        _id: idSong,
+        status: "active",
+        deleted: false,
+    }, {
+        $inc: { listen: 1 },
+    }, {
+        new: true,
+    }).select("listen");
+    res.json({ success: true, listen: song?.listen });
+};
+exports.listen = listen;
