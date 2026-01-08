@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const slug = require("mongoose-slug-updater");
+mongoose_1.default.plugin(slug);
 const songSchema = new mongoose_1.default.Schema({
     title: String,
     avatar: String,
@@ -21,7 +23,11 @@ const songSchema = new mongoose_1.default.Schema({
     lyrics: String,
     audio: String,
     status: String,
-    slug: String,
+    slug: {
+        type: String,
+        slug: "title",
+        unique: true,
+    },
     deleted: {
         type: Boolean,
         default: false,

@@ -17,7 +17,7 @@ app.use(express_1.default.static("public"));
 app.set("views", path_1.default.join(process.cwd(), "views"));
 app.set("view engine", "pug");
 //TimyMCE
-app.use("/tinymce", express_1.default.static(path_1.default.join(__dirname, "node_modules", "tinymce")));
+app.use("/tinymce", express_1.default.static(path_1.default.join(process.cwd(), "node_modules", "tinymce")));
 //end TimyMCE
 //App local Variables
 app.locals.prefixAdmin = config_1.systemConfig.prefixAdmin;

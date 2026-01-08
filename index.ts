@@ -19,7 +19,7 @@ app.set("view engine", "pug");
 //TimyMCE
 app.use(
   "/tinymce",
-  express.static(path.join(__dirname, "node_modules", "tinymce"))
+  express.static(path.join(process.cwd(), "node_modules", "tinymce"))
 );
 //end TimyMCE
 

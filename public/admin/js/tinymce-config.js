@@ -5,6 +5,7 @@ if (listTextareaMCE.length > 0) {
     const id = textarea.id;
     tinymce.init({
       selector: `#${id}`,
+      license_key: "gpl", // 👈 BẮT BUỘC PHẢI CÓ
       plugins: "image code",
       image_title: true,
       automatic_uploads: true,
