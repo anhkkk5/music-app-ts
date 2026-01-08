@@ -13,17 +13,18 @@ const config_1 = require("./config/config");
 dotenv_1.default.config();
 const port = Number(process.env.PORT) || 3002;
 const app = (0, express_1.default)();
+// Body parser (chuẩn Express)
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.static("public"));
 app.set("views", path_1.default.join(process.cwd(), "views"));
 app.set("view engine", "pug");
-//TimyMCE
+// TinyMCE
 app.use("/tinymce", express_1.default.static(path_1.default.join(process.cwd(), "node_modules", "tinymce")));
-//end TimyMCE
-//App local Variables
+// App locals
 app.locals.prefixAdmin = config_1.systemConfig.prefixAdmin;
-//clientRoutes
+// Routes
 (0, index_route_1.default)(app);
-//adminRoutes
 (0, index_route_2.default)(app);
 const bootstrap = async () => {
     await (0, database_1.connect)();

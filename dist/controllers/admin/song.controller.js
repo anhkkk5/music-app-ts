@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create = exports.index = void 0;
+exports.createPost = exports.create = exports.index = void 0;
 const song_model_1 = __importDefault(require("../../models/song.model"));
 const topic_model_1 = __importDefault(require("../../models/topic.model"));
 const singer_model_1 = __importDefault(require("../../models/singer.model"));
@@ -18,7 +18,7 @@ const index = async (req, res) => {
     });
 };
 exports.index = index;
-//[POST] /admin/songs/create
+//[Get] /admin/songs/create
 const create = async (req, res) => {
     const topic = await topic_model_1.default.find({
         deleted: false,
@@ -35,3 +35,9 @@ const create = async (req, res) => {
     });
 };
 exports.create = create;
+//[POST] /admin/songs/create
+const createPost = async (req, res) => {
+    console.log(req.body);
+    res.send("ok");
+};
+exports.createPost = createPost;

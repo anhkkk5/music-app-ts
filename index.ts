@@ -11,28 +11,30 @@ const port = Number(process.env.PORT) || 3002;
 
 const app: Express = express();
 
+// Body parser (chuẩn Express)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static("public"));
 
 app.set("views", path.join(process.cwd(), "views"));
 app.set("view engine", "pug");
 
-//TimyMCE
+// TinyMCE
 app.use(
   "/tinymce",
   express.static(path.join(process.cwd(), "node_modules", "tinymce"))
 );
-//end TimyMCE
 
-//App local Variables
+// App locals
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
-//clientRoutes
+
+// Routes
 clientRoutes(app);
-//adminRoutes
 adminRoutes(app);
 
 const bootstrap = async () => {
   await connect();
-
   app.listen(port, () => {
     console.log(`App listening on port ${port}`);
   });

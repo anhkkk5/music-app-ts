@@ -14,7 +14,7 @@ export const index = async (req: Request, res: Response) => {
   });
 };
 
-//[POST] /admin/songs/create
+//[Get] /admin/songs/create
 export const create = async (req: Request, res: Response) => {
   const topic = await Topic.find({
     deleted: false,
@@ -30,4 +30,11 @@ export const create = async (req: Request, res: Response) => {
     topic: topic,
     singer: singer,
   });
+};
+
+//[POST] /admin/songs/create
+export const createPost = async (req: Request, res: Response) => {
+  console.log(req.body);
+
+  res.send("ok");
 };
