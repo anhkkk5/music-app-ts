@@ -34,7 +34,16 @@ export const create = async (req: Request, res: Response) => {
 
 //[POST] /admin/songs/create
 export const createPost = async (req: Request, res: Response) => {
-  console.log(req.body);
+  const dataSong = {
+    title: req.body.title,
+    topicId: req.body.topicId,
+    singerId: req.body.singerId,
+    description: req.body.description,
+    status: "active",
+    avatar: req.body.avatar,
+  };
 
-  res.send("ok");
+  const song = await Song.create(dataSong);
+
+  res.send(song);
 };

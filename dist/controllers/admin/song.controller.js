@@ -37,7 +37,15 @@ const create = async (req, res) => {
 exports.create = create;
 //[POST] /admin/songs/create
 const createPost = async (req, res) => {
-    console.log(req.body);
-    res.send("ok");
+    const dataSong = {
+        title: req.body.title,
+        topicId: req.body.topicId,
+        singerId: req.body.singerId,
+        description: req.body.description,
+        status: "active",
+        avatar: req.body.avatar,
+    };
+    const song = await song_model_1.default.create(dataSong);
+    res.send(song);
 };
 exports.createPost = createPost;
