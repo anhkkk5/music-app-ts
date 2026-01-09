@@ -1,46 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
-import streamifier from "streamifier";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-// Cloudinary configuration
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_KEY ?? process.env.API_KEY,
-  api_secret: process.env.CLOUD_SECRET ?? process.env.API_SECRET,
-});
-
-// Extend Express Request type to include file
-interface MulterRequest extends Request {
-  file?: Express.Multer.File;
-}
-
-const streamUpload = (buffer: Buffer): Promise<UploadApiResponse> => {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { resource_type: "auto" },
-      (error, result) => {
-        if (result) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      }
-    );
-
-    streamifier.createReadStream(buffer).pipe(stream);
-  });
-};
-
-const uploadToCloudinary = async (buffer: Buffer): Promise<string> => {
-  const result: UploadApiResponse = await streamUpload(buffer);
-  return result.secure_url ?? result.url;
-};
+import uploadToCloudinary from "../../helpers/uploadToCloudinary";
 
 export const uploadSingle = async (
-  req: MulterRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -53,6 +15,44 @@ export const uploadSingle = async (
     req.body[req.file.fieldname] = result;
   } catch (error) {
     return next(error);
+  }
+
+  next();
+};
+
+export const uploadFields = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  if (!req.files) {
+    return next();
+  }
+
+  const filesByField = req.files as Record<string, Express.Multer.File[]>;
+  console.log(filesByField);
+  for (const key of Object.keys(filesByField)) {
+    const files = filesByField[key];
+
+    // Khởi tạo giá trị cho từng field
+    if (files.length <= 1) {
+      req.body[key] = "";
+    } else {
+      req.body[key] = [];
+    }
+
+    for (const file of files) {
+      try {
+        const result = await uploadToCloudinary(file.buffer);
+        if (Array.isArray(req.body[key])) {
+          req.body[key].push(result);
+        } else {
+          req.body[key] = result;
+        }
+      } catch (error) {
+        return next(error);
+      }
+    }
   }
 
   next();

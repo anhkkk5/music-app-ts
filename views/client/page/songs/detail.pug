@@ -6,8 +6,10 @@ block main
     .container.my-3
       .row
         .col-12
+          // ===== Title =====
           .inner-title #{song.title}
 
+          // ===== Actions =====
           .inner-actions
             .inner-action.inner-time
               i.fa-regular.fa-clock
@@ -21,17 +23,22 @@ block main
               i.fa-solid.fa-music
               |  #{topic.title}
 
-            div(class="inner-action inner-listen")
-              <i class="fa-solid fa-headphones"></i>
-              span #{song.listen} lượt nghe
-            div(class="inner-action inner-like" button-like=song.id)  
-              i.fa-regular.fa-thumbs-up
-              span #{song.like} thích
+            .inner-action.inner-listen
+              i.fa-solid.fa-headphones
+              span  #{song.listen} lượt nghe
 
-            div(class=("inner-action inner-heart" + (song.isFavorite ? " active" : "")) button-favorite=song.id)
+            .inner-action.inner-like(button-like=song.id)
+              i.fa-regular.fa-thumbs-up
+              span  #{song.like} thích
+
+            .inner-action.inner-heart(
+              class=(song.isFavorite ? "active" : "")
+              button-favorite=song.id
+            )
               i.fa-regular.fa-heart
               |  Bài hát yêu thích
 
+          // ===== Player =====
           .inner-play
             .inner-avatar
               img(
@@ -40,7 +47,7 @@ block main
               )
 
             .inner-audio
-              //- Nếu dùng audio mặc định thì mở block này
+              //- Audio mặc định
               //-
               //- audio(controls)
               //-   source(
@@ -49,14 +56,17 @@ block main
               //-   )
 
               //- APlayer
-              div(id="aplayer" data-song=`${JSON.stringify(song)}` data-singer=`${JSON.stringify(singer)}`) /* định nghĩa */
+              #aplayer(
+                data-song=`${JSON.stringify(song)}`
+                data-singer=`${JSON.stringify(singer)}`
+              )
 
+          // ===== Description =====
           .inner-desc
             .inner-label Mô tả
-            .inner-text
-              | #{song.description}
+            .inner-text #{song.description}
 
+          // ===== Lyrics =====
           .inner-desc
             .inner-label Lời bài hát
-            .inner-text
-              | !{song.lyrics}
+            .inner-text !{song.lyrics}

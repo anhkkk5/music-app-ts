@@ -56,20 +56,24 @@ const detail = async (req, res) => {
         deleted: false,
     });
     if (!song) {
-        return res.status(404).render("client/page/songs/detail", {
-            pageTitle: "Bài hát không tồn tại",
-        });
+        return res.status(404).send("Bài hát không tồn tại");
     }
     const singer = await singer_model_1.default.findOne({
         _id: song.singerId,
         status: "active",
         deleted: false,
     }).select("fullName");
+    if (!singer) {
+        return res.status(404).send("Ca sĩ không tồn tại");
+    }
     const topic = await topic_model_1.default.findOne({
         _id: song.topicId,
         status: "active",
         deleted: false,
     }).select("title");
+    if (!topic) {
+        return res.status(404).send("Chủ đề không tồn tại");
+    }
     // console.log("topic:", topic);
     // console.log("song:", song);
     const favoriteSong = await favorite_song_model_1.default.findOne({

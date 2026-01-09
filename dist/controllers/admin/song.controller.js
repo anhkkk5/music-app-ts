@@ -7,6 +7,7 @@ exports.createPost = exports.create = exports.index = void 0;
 const song_model_1 = __importDefault(require("../../models/song.model"));
 const topic_model_1 = __importDefault(require("../../models/topic.model"));
 const singer_model_1 = __importDefault(require("../../models/singer.model"));
+const config_1 = require("../../config/config");
 //[GET] /admin/songs
 const index = async (req, res) => {
     const songs = await song_model_1.default.find({
@@ -44,8 +45,9 @@ const createPost = async (req, res) => {
         description: req.body.description,
         status: "active",
         avatar: req.body.avatar,
-    };
+        audio: req.body.audio,
+    }; //tránh để user thay đổi thông tin
     const song = await song_model_1.default.create(dataSong);
-    res.send(song);
+    res.redirect(`/${config_1.systemConfig.prefixAdmin}/songs`);
 };
 exports.createPost = createPost;

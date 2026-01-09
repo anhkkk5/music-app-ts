@@ -45,5 +45,8 @@ const uploadCloud = __importStar(require("../../middlewares/admin/uploadCloud.mi
 const upload = (0, multer_1.default)();
 router.get("/", controller.index);
 router.get("/create", controller.create);
-router.post("/create", upload.single("avatar"), uploadCloud.uploadSingle, controller.createPost);
+router.post("/create", upload.fields([
+    { name: "avatar", maxCount: 1 },
+    { name: "audio", maxCount: 1 },
+]), uploadCloud.uploadFields, controller.createPost);
 exports.songRoutes = router;

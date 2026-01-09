@@ -57,9 +57,7 @@ export const detail = async (req: Request, res: Response) => {
   });
 
   if (!song) {
-    return res.status(404).render("client/page/songs/detail", {
-      pageTitle: "Bài hát không tồn tại",
-    });
+    return res.status(404).send("Bài hát không tồn tại");
   }
 
   const singer = await Singer.findOne({
@@ -68,11 +66,19 @@ export const detail = async (req: Request, res: Response) => {
     deleted: false,
   }).select("fullName");
 
+  if (!singer) {
+    return res.status(404).send("Ca sĩ không tồn tại");
+  }
+
   const topic = await Topic.findOne({
     _id: song.topicId,
     status: "active",
     deleted: false,
   }).select("title");
+
+  if (!topic) {
+    return res.status(404).send("Chủ đề không tồn tại");
+  }
   // console.log("topic:", topic);
   // console.log("song:", song);
 
