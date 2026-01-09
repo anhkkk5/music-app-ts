@@ -56,13 +56,15 @@ block main
         upload-image-input
       )
 
-      img(
-        src=""
-        class="image-preview"
-        upload-image-preview
-      )
+      div(class="mt-2")
+        img(
+          src=""
+          class="image-preview img-thumbnail"
+          style="max-width: 220px; display: none;"
+          upload-image-preview
+        )
 
-    div(class="form-group")
+    div(class="form-group", upload-audio)
       label(for="audio") Audio
       input(
         type="file"
@@ -70,8 +72,15 @@ block main
         id="audio"
         name="audio"
         accept="audio/*"
+        upload-audio-input
       )
 
+      audio(
+        class="mt-2 w-100"
+        controls
+        style="display: none;"
+        upload-audio-play
+      )
 
     div(class="form-group")
       label(for="desc") Mô tả
